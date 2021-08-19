@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -239,5 +240,123 @@ class CampoTest {
                 () -> assertTrue(vizinho2.isAberto()),
                 () -> assertFalse(vizinhoDoVizinho2.isAberto())
         );
+    }
+
+    @Test
+    @DisplayName("Deve retornar a quantidade de linhas")
+    void test22() {
+        assertEquals(3, campo.getLinha());
+    }
+
+    @Test
+    @DisplayName("Deve retornar a quantidade de colunas")
+    void test23() {
+        assertEquals(3, campo.getColuna());
+    }
+
+    @Test
+    @DisplayName("Deve retornar true quando o campo estiver aberto e não minado")
+    void test24() {
+        campo.abrir();
+        assertTrue(campo.objetivoAlcancado());
+    }
+
+    @Test
+    @DisplayName("Deve retornar true quando o campo estiver fechado mas protegido")
+    void test25() {
+        campo.minar();
+        campo.marcar();
+        assertTrue(campo.objetivoAlcancado());
+    }
+
+    @Test
+    @DisplayName("Deve retornar a quantidade de minas na vizinhança")
+    void test26() {
+        Campo vizinho1 = new Campo(2, 2);
+        Campo vizinho2 = new Campo(2, 3);
+        Campo vizinho3 = new Campo(2, 3);
+        Campo vizinho4 = new Campo(2, 3);
+
+        vizinho3.minar();
+        vizinho4.minar();
+
+        campo.adicionarVizinho(vizinho1);
+        campo.adicionarVizinho(vizinho2);
+        campo.adicionarVizinho(vizinho3);
+        campo.adicionarVizinho(vizinho4);
+
+        assertEquals(2, campo.minasNaVizinhanca());
+    }
+
+    @Test
+    @DisplayName("Deve resetar todos os campos quanto acionar o método reiniciar")
+    void test27() {
+        campo.abrir();
+        campo.minar();
+        campo.marcar();
+
+        campo.reiniciar();
+
+        Assertions.assertAll(
+                () -> assertFalse(campo.isAberto()),
+                () -> assertFalse(campo.isMarcado()),
+                () -> assertFalse(campo.isMinado())
+        );
+    }
+
+    @Test
+    @DisplayName("Deve retornar true se o campo estiver fechado")
+    void test28() {
+        assertTrue(campo.isFechado());
+    }
+
+    @Test
+    @DisplayName("Deve retornar '@' no toString se o campo estiver marcado")
+    void test29() {
+        campo.marcar();
+        assertEquals("@", campo.toString());
+    }
+
+    @Test
+    @DisplayName("Deve retornar '*' no toString quando um campo for aberto e estiver minado")
+    void test30() {
+        campo.abrir();
+        campo.minar();
+        assertEquals("*", campo.toString());
+    }
+
+    @Test
+    @DisplayName("Deve retornar '' no toString se o campo estiver com o objetivo concluído")
+    void test31() {
+        campo.abrir();
+        assertEquals("", campo.toString());
+        assertTrue(campo.objetivoAlcancado());
+    }
+
+    @Test
+    @DisplayName("Deve retornar '?' no toString se o campo ainda não tiver sido acionado")
+    void test32() {
+        assertEquals("?", campo.toString());
+    }
+
+    @Test
+    @DisplayName("Deve retornar '2' no toString se o campo tiver dois campos minados na vizinhança")
+    void test33() {
+        Campo vizinho1 = new Campo(2, 2);
+        Campo vizinho2 = new Campo(2, 3);
+        Campo vizinho3 = new Campo(2, 3);
+        Campo vizinho4 = new Campo(2, 3);
+
+        vizinho3.minar();
+        vizinho4.minar();
+
+        campo.adicionarVizinho(vizinho1);
+        campo.adicionarVizinho(vizinho2);
+        campo.adicionarVizinho(vizinho3);
+        campo.adicionarVizinho(vizinho4);
+
+        campo.abrir();
+
+        assertEquals("2", campo.toString());
     }
 }

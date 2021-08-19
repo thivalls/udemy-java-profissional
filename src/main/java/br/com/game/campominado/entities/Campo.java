@@ -69,8 +69,16 @@ public class Campo {
         return marcado;
     }
 
+    public boolean isMinado() {
+        return minado;
+    }
+
     public boolean isAberto() {
         return aberto;
+    }
+
+    public boolean isFechado() {
+        return !isAberto();
     }
 
     public int getLinha() {
@@ -99,14 +107,12 @@ public class Campo {
 
     public String toString() {
         if (marcado) {
-            return "x";
+            return "@";
         } else if(aberto && minado) {
             return "*";
         } else if (aberto && minasNaVizinhanca() > 0) {
             return Long.toString(minasNaVizinhanca());
-        } else if (minado && marcado) {
-            return "@";
-        }else if (aberto) {
+        } else if (aberto) {
             return "";
         } else {
             return "?";
