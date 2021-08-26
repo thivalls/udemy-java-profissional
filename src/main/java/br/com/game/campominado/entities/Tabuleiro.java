@@ -21,6 +21,19 @@ public class Tabuleiro {
         gerarMinas();
     }
 
+    public void abrir(int linha, int coluna) {
+        campos.parallelStream()
+                .filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+                .findFirst()
+                .ifPresent(Campo::abrir);
+    }
+
+    public void marcar(int linha, int coluna) {
+        campos.parallelStream()
+                .filter(c -> c.getLinha() == linha && c.getColuna() == coluna)
+                .findFirst()
+                .ifPresent(Campo::marcar);
+    }
 
     private void gerarCampos() {
         for (int linha = 0; linha < linhas; linha++) {
@@ -61,6 +74,17 @@ public class Tabuleiro {
 
     @Override
     public String toString() {
-        return "Tabuleiro =>>>";
+        StringBuilder output = new StringBuilder();
+        int loop = 0;
+        for (int linha = 0; linha < linhas; linha++) {
+            for (int coluna = 0; coluna < colunas; coluna++) {
+                output.append(" ");
+                output.append(campos.get(loop));
+                output.append(" ");
+                loop++;
+            }
+            output.append("\n");
+        }
+        return output.toString();
     }
 }
