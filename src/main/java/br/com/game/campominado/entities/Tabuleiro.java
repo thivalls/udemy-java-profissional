@@ -43,7 +43,7 @@ public class Tabuleiro {
         Predicate<Campo> minado = Campo::isMinado;
         do {
             minasArmadas = campos.stream().filter(minado).count();
-            int aleatorio = (int) (Math.random() + campos.size());
+            int aleatorio = (int) (Math.random() * campos.size());
             if (!campos.get(aleatorio).isMinado()) {
                 campos.get(aleatorio).minar();
             }
@@ -51,15 +51,16 @@ public class Tabuleiro {
     }
 
     boolean objetivoAlcancado() {
-        return campos.stream().allMatch(c -> c.objetivoAlcancado());
+        return campos.stream().allMatch(Campo::objetivoAlcancado);
     }
 
     public void reiniciar() {
-        campos.stream().forEach(c -> c.reiniciar());
+        campos.forEach(Campo::reiniciar);
         gerarMinas();
     }
 
+    @Override
     public String toString() {
-        return "";
+        return "Tabuleiro =>>>";
     }
 }
