@@ -11,10 +11,6 @@ public class CampominadoApplication {
         SpringApplication.run(CampominadoApplication.class, args);
         Tabuleiro tabuleiro = new Tabuleiro(6, 6, 6);
 
-        tabuleiro.abrir(0,0);
-        tabuleiro.marcar(1,2);
-        tabuleiro.marcar(2,3);
-
         System.out.println(tabuleiro.toString());
     }
 
